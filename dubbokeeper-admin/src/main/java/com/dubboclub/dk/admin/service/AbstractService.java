@@ -93,7 +93,7 @@ public abstract class AbstractService {
                         boolean matched=true;
                         for(Map.Entry<String,String> filterEntry:filter.entrySet()){
                             String filterValue = filterEntry.getValue();
-                            String paramValue = parameters.get(filterEntry.getKey());
+                            String paramValue = getParamValue(parameters, filterEntry.getKey());
                             if(StringUtils.isEquals(paramValue, filterValue)){
                                continue;
                             }else{
@@ -119,6 +119,14 @@ public abstract class AbstractService {
             }
         }
         return matchedData;
+    }
+
+    private String getParamValue(Map<String, String> params, String key) {
+        String value = params.get(key);
+        if (StringUtils.isBlank(value)) {
+            value = params.get("default." + key);
+        }
+        return value;
     }
 
 
